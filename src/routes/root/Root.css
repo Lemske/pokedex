@@ -39,6 +39,10 @@
         font-size:xx-large;
     }
 
+    .header .item-3 {
+        flex-direction: column;
+    }
+
     .header {
         height: 3em;
     }
