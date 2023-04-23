@@ -1,0 +1,64 @@
+/*Taken from https://www.youtube.com/watch?v=i8fAO_zyFAM*/
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(0,0,0,0.2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10;
+}
+
+.popup-inner {
+    border-radius: 1em;
+    border-style: solid;
+    position: relative;
+    padding: 32px;
+    width: 780px;
+    height: 500px;
+    background-color: white;
+}
+
+@media screen and (max-width: 861px) {
+    .popup-inner {
+        width: 400px;
+        height: 80%;
+    }
+  }
+
+
+.popup-inner .close-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 25px;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    border-style: ridge;
+    border-color: #a70000;
+
+    height: 40px;
+    width: 40px;
+    background-color: #ff0000;
+    border-radius: 50%;
+
+    position: absolute;
+    top: -15px;
+    right: -15px;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.popup-inner .close-btn:hover {
+    border-color: #690000;
+    background-color: #ffabab;
+}
