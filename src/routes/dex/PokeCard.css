@@ -365,11 +365,11 @@
 
 .rotation-bg {
   z-index: -1;
-  width: 200%;
-  height: 200%;
+  width: 300%;
+  height: 300%;
   position: absolute;
-  top: -50%;
-  left: -50%;
+  top: -100%;
+  left: -100%;
   animation: animateThis 2s ease-in-out;
   animation-name: rotate;
 }
