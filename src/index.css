@@ -4,28 +4,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  background: linear-gradient(324deg, #a8a77a, #ee8130, #6390f0, #f7d02c, #7ac74c, #96d9d6, #c22e28, #a33ea1, #e2bf65, #a98ff3, #a6b91a, #b6a136, #735797, #6f35fc, #705746, #b7b7ce, #d685ad);
-  background-size: 3400% 3400%;
+  background: linear-gradient(345deg, #A8A77A, #EE8130, #6390F0, #F7D02C, #7AC74C, #96D9D6, #C22E28, #A33EA1, #E2BF65, #A98FF3, #F95587, #A6B91A, #B6A136, #735797, #6F35FC, #705746, #B7B7CE, #D685AD);
+  background-size: 1000% 1000%;
 
-  -webkit-animation: AnimationName 180s ease infinite;
-  -moz-animation: AnimationName 180s ease infinite;
-  animation: AnimationName 180s ease infinite;
+  animation: AnimationName 60s ease infinite;
 }
 
-@-webkit-keyframes AnimationName {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-@-moz-keyframes AnimationName {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
 @keyframes AnimationName {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap");

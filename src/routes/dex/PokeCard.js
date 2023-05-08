@@ -1,119 +1,91 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './PokeCard.css';
 import pokeball from '../../assets/PokeBall.png'
 import PopUp from '../../utils/PopUp';
+import { useFetchPokemonId } from '../../utils/pokeAPI';
+import { typeGradient, barGradient, colours, backgroundColor } from '../../utils/pokeColours';
 
 let key = 0;
 
-const PokeCard = ({pokemon}) => {
-    const [pokeInfo, setPokeInfo] = useState(null);
-    const [cought, setCaught] = useState();
+const PokeCard = ({pokeId}) => {
+    const [pokemon, isLoading] = useFetchPokemonId(pokeId);
     const [popUp, setPopUp] = useState(false);
     
-    useEffect(() => {
-        setCaught(false);
-        fetch(pokemon.url)
-            .then(res => {
-                if (res.ok) return res.json();
-                throw new Error("Network Response was not dandy")
-            })
-            .then(res => {
-                setPokeInfo(res);
-                setCaught(true);
-            })
-            .catch(error => console.log(error));
-        }, [])
-
-    if (!cought)
-        return (<>
-            <div className="PokeCard-Border">
+    if (isLoading)
+        return (
+            <div className="PokeCard-Border shake">
                 <div className='pokeball_container'>
                     <img className="pokeball" src={pokeball} alt='Loading'/>
                 </div>
             </div>
-        </>)
+        );
     return (<>
-        <div className="PokeCard-Border" style={gradient(pokeInfo)} onClick={() => setPopUp(true)}>
-            <div className="PokeCard-Name">{pokeInfo?.name.charAt(0).toUpperCase() + pokeInfo?.name.slice(1)}</div>
-            <div className='img-center'><img src={pokemonImg(pokeInfo)} alt={pokeInfo?.name}/></div>
-            <div className='pokemon-id'>#{pokeInfo?.id}</div>
-            <div className='pokemon-types'>{types(pokeInfo)}</div>
+        <div className="PokeCard-Border pop"  onClick={() => setPopUp(true)}>
+            <div className='rotation-bg'>
+                {background(pokemon.types)}
+            </div>
+            <div className="PokeCard-Name get-in">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</div>
+            <div className='img-center get-in'><img src={pokemon.icon} alt={pokemon.name}/></div>
+            <div className='pokemon-id get-in'>#{pokemon.id}</div>
+            <div className='pokemon-types get-in'>{types(pokemon.types)}</div>
         </div>
-        <PopUp trigger={popUp} setTrigger={setPopUp}><PokemonDiscription pokemon={pokeInfo}/></PopUp>
+        <PopUp trigger={popUp} setTrigger={setPopUp}><PokemonDiscription pokemon={pokemon}/></PopUp>
     </>)
 }
 
-
-const gradient = (pokeInfo, deg = 90, intersection = 50) => {
-    if (pokeInfo == null) return;
-    let types = pokeInfo.types;
-    let primary = colours[types[0].type.name];
-    let secondary = types.length < 2 ? primary : colours[types[1].type.name];
-    return {
-        background: `linear-gradient(${deg}deg, ${primary} 0%, ${primary} ${intersection}%, ${secondary} ${intersection}%, ${secondary} 100%)`
-    }
+const background = (types) => {
+    let primary = types[0];
+    let secondary = types.length < 2 ? primary : types[1];
+    return (<>
+        <div className="left move" style={backgroundColor(primary)}></div>
+        <div className="right move" style={backgroundColor(secondary)}></div>
+    </>)
 }
 
-const pokemonImg = (pokemon) => {
-    return pokemon.sprites.versions["generation-v"]["black-white"].animated.front_default === null ?  pokemon.sprites.front_default :  pokemon.sprites.versions["generation-v"]["black-white"].animated.front_default
-}
-
-const pokemonOfficialArt = (pokemon, shiny) => {
-    if(!shiny)
-        return pokemon.sprites.other["official-artwork"].front_default
-    else
-        return pokemon.sprites.other["official-artwork"].front_shiny
-}
-
-const types = (pokeInfo) => {
-    if (pokeInfo == null) return;
-    let types = pokeInfo.types;
-    let htmlTypes = types.length < 2 ? type(types[0].type.name) : [type(types[0].type.name), type(types[1].type.name)];  
+const types = (types) => {
+    if (types == null) return;
+    let htmlTypes = types.length < 2 ? type(types[0]) : [type(types[0]), type(types[1])];  
     return (<>{htmlTypes}</>)
 }
 
 const PokemonDiscription = ({pokemon}) => {
     const [isShiny, setIsShiny] = useState(false);
     return (
-        <>
-            <div className='poke-description' style={gradient(pokemon, 300, 58)}>
-                <div className='item item-1'>
-                    {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-                </div>
-                <div className='item item-2'>
-                    <img src={pokemonOfficialArt(pokemon, isShiny)}/>
-                </div>
-                <div className='item item-3'>
-                    <div className='pokemon-types'>
-                        {types(pokemon)}
-                    </div>
-                </div>
-                <div className='item item-4'>
-                    <PokemonFormButton set={setIsShiny} form={isShiny ? "normal" : "shiny"}/>
-                </div>
-                <div className='item item-5'>
-                    <Stats stats={pokemon.stats}/>
-                </div>
-                <div className='item item-6'>
-                    <div>Weight: {pokemon.weight / 10} kg.</div>
-                    <div>Height: {pokemon.height / 10} m.</div>
-                </div>
-                <div className='item item-7'>
-                    <Moves moves={pokemon.moves}/>
+        <div className='poke-description' style={typeGradient(pokemon.types, 300, 58)}>
+            <div className='item item-1'>
+                {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+            </div>
+            <div className='item item-2'>
+                <img src={isShiny ? pokemon.officialArtShiny : pokemon.officialArt}/>
+            </div>
+            <div className='item item-3'>
+                <div className='pokemon-types'>
+                    {types(pokemon.types)}
                 </div>
             </div>
-        </>
+            <div className='item item-4'>
+                <PokemonFormButton set={setIsShiny} form={isShiny ? "normal" : "shiny"}/>
+            </div>
+            <div className='item item-5'>
+                <Stats stats={pokemon.stats}/>
+            </div>
+            <div className='item item-6'>
+                <div>Weight: {pokemon.weight} kg.</div>
+                <div>Height: {pokemon.height} m.</div>
+            </div>
+            <div className='item item-7'>
+                <Moves moves={pokemon.moves}/>
+            </div>
+        </div>
     )
 }
 
 const PokemonFormButton = ({set, form}) => {
     return (
-        <>
         <div className={`${form} form-btn`} onClick={()=> {
             set((old) => old === true ? false : true)
         }}>  
         {form}</div>
-        </>
     ) 
 }
 
@@ -150,33 +122,6 @@ const Moves = ({moves}) => {
     )
 }
 
-const barGradient = (intersection) => {
-    return  {
-        background: `linear-gradient(90deg, #3B77BC 0%, #3B77BC ${intersection}%, #FFFFFF ${intersection}%, #FFFFFF 100%)`
-    }
-}
-
-const type = (type) =>  <div className='type' key={key++} style={{background: `${colours[type]}`}}>{type.charAt(0).toUpperCase() + type.slice(1)}</div>;
-
-const colours = {
-	normal: "#A8A77A",
-	fire: "#EE8130",
-	water: "#6390F0",
-	electric: "#F7D02C",
-	grass: "#7AC74C",
-	ice: "#96D9D6",
-	fighting: "#C22E28",
-	poison: "#A33EA1",
-	ground: "#E2BF65",
-	flying: "#A98FF3",
-	psychic: "#F95587",
-	bug: "#A6B91A",
-	rock: "#B6A136",
-	ghost: "#735797",
-	dragon: "#6F35FC",
-	dark: "#705746",
-	steel: "#B7B7CE",
-	fairy: "#D685AD",
-};
+const type = (type) => <div className='type' key={key++} style={{background: `${colours[type]}`}}>{type.charAt(0).toUpperCase() + type.slice(1)}</div>;
 
 export default PokeCard
