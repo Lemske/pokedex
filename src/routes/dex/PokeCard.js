@@ -13,21 +13,21 @@ const PokeCard = ({pokeId}) => {
     
     if (isLoading)
         return (
-            <div className="PokeCard-Border shake">
-                <div className='pokeball_container'>
+            <div className="pokecard shake">
+                <div className='flex-center-center pokeball_container '>
                     <img className="pokeball" src={pokeball} alt='Loading'/>
                 </div>
             </div>
         );
     return (<>
-        <div className="PokeCard-Border pop"  onClick={() => setPopUp(true)}>
-            <div className='rotation-bg'>
+        <div className="pokecard pop"  onClick={() => setPopUp(true)}>
+            <div className='pokecard-background'>
                 {background(pokemon.types)}
             </div>
-            <div className="PokeCard-Name get-in">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</div>
-            <div className='img-center get-in'><img src={pokemon.icon} alt={pokemon.name}/></div>
-            <div className='pokemon-id get-in'>#{pokemon.id}</div>
-            <div className='pokemon-types get-in'>{types(pokemon.types)}</div>
+            <div className="flex-center-center pokecard-name slide-down">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</div>
+            <div className='flex-center-center pokecard-icon pop-in'><img src={pokemon.icon} alt={pokemon.name}/></div>
+            <div className='pokemon-id pop-in'>#{pokemon.id}</div>
+            <div className='pokemon-types pop-in'>{types(pokemon.types)}</div>
         </div>
         <PopUp trigger={popUp} setTrigger={setPopUp}><PokemonDiscription pokemon={pokemon}/></PopUp>
     </>)
@@ -37,8 +37,8 @@ const background = (types) => {
     let primary = types[0];
     let secondary = types.length < 2 ? primary : types[1];
     return (<>
-        <div className="left move" style={backgroundColor(primary)}></div>
-        <div className="right move" style={backgroundColor(secondary)}></div>
+        <div className="left" style={backgroundColor(primary)}></div>
+        <div className="right" style={backgroundColor(secondary)}></div>
     </>)
 }
 
@@ -51,7 +51,7 @@ const types = (types) => {
 const PokemonDiscription = ({pokemon}) => {
     const [isShiny, setIsShiny] = useState(false);
     return (
-        <div className='poke-description' style={typeGradient(pokemon.types, 300, 58)}>
+        <div className='pokemon-description' style={typeGradient(pokemon.types, 300, 58)}>
             <div className='item item-1'>
                 {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
             </div>
@@ -63,7 +63,7 @@ const PokemonDiscription = ({pokemon}) => {
                     {types(pokemon.types)}
                 </div>
             </div>
-            <div className='item item-4'>
+            <div className='flex-center-center item item-4'>
                 <PokemonFormButton set={setIsShiny} form={isShiny ? "normal" : "shiny"}/>
             </div>
             <div className='item item-5'>
@@ -82,7 +82,7 @@ const PokemonDiscription = ({pokemon}) => {
 
 const PokemonFormButton = ({set, form}) => {
     return (
-        <div className={`${form} form-btn`} onClick={()=> {
+        <div className={`${form} flex-center-center form-btn`} onClick={()=> {
             set((old) => old === true ? false : true)
         }}>  
         {form}</div>
@@ -102,7 +102,7 @@ const Stats = ({stats}) => {
         );
     });
     return (
-        <div className='stats'>
+        <div className='flex-center-center stats'>
             {statBars}
         </div>
     )
@@ -122,6 +122,6 @@ const Moves = ({moves}) => {
     )
 }
 
-const type = (type) => <div className='type' key={key++} style={{background: `${colours[type]}`}}>{type.charAt(0).toUpperCase() + type.slice(1)}</div>;
+const type = (type) => <div className='flex-center-center type' key={key++} style={{background: `${colours[type]}`}}>{type.charAt(0).toUpperCase() + type.slice(1)}</div>;
 
 export default PokeCard

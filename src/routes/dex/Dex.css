@@ -1,4 +1,4 @@
-.App {
+.dex-container {
   text-align: center;
 }
 
@@ -31,22 +31,29 @@
   cursor: not-allowed;
 }
 
-.container {
+.overview-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(4, 10em);
 }
 
 @media screen and (max-width: 1061px) {
-  .container {
+  .overview-container {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(10, 10em);
   }
 }
 
 @media screen and (max-width: 641px) {
-  .container {
+  .overview-container {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(15, 10em);
+  }
+}
+
+@media screen and (max-width: 641px) {
+  .page-selector div {
+    width: 5em;
+    font-size: 1.5em;
   }
 }

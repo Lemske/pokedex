@@ -1,5 +1,5 @@
 import './Dex.css';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import PokeCard from './PokeCard';
 
 const pokemonIdLimit = 649;
@@ -13,10 +13,8 @@ const buttonTypes = {
 
 const Dex = () => {
   const [page, setPage] = useState(0);
-  console.log(pageLimit)
-  console.log(page);
   return (
-    <div className="App">
+    <div className="dex-container">
       <PageSelector set={setPage} page={page}/>
       <PokemonOverview page={page}/>
     </div>
@@ -48,7 +46,6 @@ const PageButton = React.memo(({ set, type, disabled }) => {
 
 const PokemonOverview = ({page}) => {
   const firstId = 1 + (fetchLimit * page);
-  console.log(firstId);
   const temp = firstId + fetchLimit - 1;
   const limit = temp < pokemonIdLimit ? temp : pokemonIdLimit;
   const pokemons = React.useMemo(() => {
@@ -60,7 +57,7 @@ const PokemonOverview = ({page}) => {
   }, [page]);
   
   return (
-    <div className="container">
+    <div className="overview-container">
       {pokemons}
     </div>
   )
